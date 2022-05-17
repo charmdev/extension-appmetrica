@@ -1,0 +1,13 @@
+{
+	"name": "extension-appmetrica",
+	"url": "https://github.com/charmdev/extension-appmetrica",
+	"license": "MIT",
+	"tags": ["android", "iOS"],
+	"description": "",
+	"version": "1.0.0",
+	"dependencies": {
+		"extension-android-support-v4": ""
+	},
+	"contributors": ["charmdev"],
+	"releasenote": ""
+}
