@@ -15,9 +15,9 @@ android {
 
 dependencies {
 	
-	compile project(':deps:extension-api')
+	api project(':deps:extension-api')
 
-	implementation "com.yandex.android:mobmetricalib:${rootProject.ext.yandexMobmetricalib}"
+	implementation "io.appmetrica.analytics:analytics:${rootProject.ext.appMetricaVersion}"
 
 	
 

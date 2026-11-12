@@ -6,9 +6,9 @@ import org.haxe.lime.HaxeObject;
 import android.opengl.GLSurfaceView;
 import java.util.Currency;
 
-import com.yandex.metrica.YandexMetricaConfig;
-import com.yandex.metrica.YandexMetrica;
-import com.yandex.metrica.Revenue;
+import io.appmetrica.analytics.AppMetrica;
+import io.appmetrica.analytics.AppMetricaConfig;
+import io.appmetrica.analytics.Revenue;
 
 
 public class AppMetricaEx extends Extension
@@ -28,29 +28,29 @@ public class AppMetricaEx extends Extension
 
 		Log.d(TAG, api_key);
 
-		YandexMetricaConfig config = YandexMetricaConfig.newConfigBuilder(api_key).withSessionTimeout(300).withLogs().build();
-		YandexMetrica.activate(Extension.mainActivity, config);
-		YandexMetrica.enableActivityAutoTracking(Extension.mainActivity.getApplication());
+		AppMetricaConfig config = AppMetricaConfig.newConfigBuilder(api_key).withSessionTimeout(300).withLogs().build();
+		AppMetrica.activate(Extension.mainActivity, config);
+		AppMetrica.enableActivityAutoTracking(Extension.mainActivity.getApplication());
 		
 	}
 
 	public static void purchaseEvent(String price, String curr, String id, String type)
 	{
-		Revenue revenue = Revenue.newBuilder(Double.parseDouble(price), Currency.getInstance(curr))
+		Revenue revenue = Revenue.newBuilder(Math.round(Double.parseDouble(price) * 1000000), Currency.getInstance(curr))
 			.withProductID(id)
 			.withQuantity(1)
 			.build();
 			
-		YandexMetrica.reportRevenue(revenue);
+		AppMetrica.reportRevenue(revenue);
 
 		String eventParameters = "{\"inapp_id\":" + id +
 								 ", \"currency\":" + curr +
 								 ", \"price\":" + price +
 								 ", \"inapp_type\":" + type + "}";
 
-		YandexMetrica.reportEvent("payment_succeed", eventParameters);
+		AppMetrica.reportEvent("payment_succeed", eventParameters);
 
-		YandexMetrica.sendEventsBuffer();
+		AppMetrica.sendEventsBuffer();
 
 		Log.d(TAG, "payment_succeed:" + eventParameters);
 	}
@@ -62,9 +62,9 @@ public class AppMetricaEx extends Extension
 									", \"result\":" + result +
 									", \"connection\":\"true\"}";
 
-		YandexMetrica.reportEvent(name, eventParameters);
+		AppMetrica.reportEvent(name, eventParameters);
 
-		YandexMetrica.sendEventsBuffer();
+		AppMetrica.sendEventsBuffer();
 
 		Log.d(TAG, name + ":" + eventParameters);
 	}
@@ -74,10 +74,10 @@ public class AppMetricaEx extends Extension
 		Integer lvl = Integer.parseInt(level)-1;
 		String eventParameters_start = "{\"level_number\":" + level + "}";
 		String eventParameters_finish = "{\"level_number\":" + Integer.toString(lvl) + "}";
-		YandexMetrica.reportEvent("level_start", eventParameters_start);
-		YandexMetrica.reportEvent("level_finish", eventParameters_finish);
+		AppMetrica.reportEvent("level_start", eventParameters_start);
+		AppMetrica.reportEvent("level_finish", eventParameters_finish);
 
-		YandexMetrica.sendEventsBuffer();
+		AppMetrica.sendEventsBuffer();
 
 		Log.d(TAG, "levelSF:" + level);
 	}
